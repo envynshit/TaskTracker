@@ -29,12 +29,30 @@ def dashboard(request):
         due_date__lte=today + timezone.timedelta(days=7)
     )
     tasks_completed = Task.objects.filter(owner=request.user, status='done')
+    reminders = Reminder.objects.filter(
+        task__owner=request.user,
+        remind_at__gte=timezone.now(),
+    ).order_by('remind_at')
 
     return render(request, 'core/dashboard.html', {
         'tasks_today': task_today,
         'tasks_week': tasks_week,
         'tasks_completed': tasks_completed,
+        'reminders': reminders,
     })
+
+@login_required
+def reminder_create(request):
+    if request.method == "POST":
+        form = ReminderForm(request.POST)
+        if form.is_valid():
+            reminder = form.save(commit=False)
+            reminder.task.owner = request.user
+            reminder.save()
+            return redirect('dashboard')
+    else:
+        form = ReminderForm()
+    return render(request, 'core/reminder_form.html', {'form': form})
 
 @login_required
 def task_create(request):
@@ -61,18 +79,7 @@ def task_update(request, pk):
         form = TaskForm(instance=task)
     return render(request, 'core/task_form.html', {'form': form})
 
-@login_required
-def reminder_create(request):
-    if request.method == "POST":
-        form = ReminderForm(request.POST)
-        if form.is_valid():
-            reminder = form.save(commit=False)
-            reminder.task.owner = request.user
-            reminder.save()
-            return redirect('dashboard')
-    else:
-        form = ReminderForm()
-    return render(request, 'core/reminder_form.html', {'form': form})
+
 
 
 

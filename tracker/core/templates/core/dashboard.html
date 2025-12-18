@@ -14,7 +14,19 @@
     </form>
   </p>
 
-  
+  <h2>Upcoming reminders</h2>
+  {% if reminders %}
+  <ul>
+    {% for r in reminders %}
+      <li>
+        {{ r.remind_at }} – {{ r.task.title }}
+      </li>
+  {% endfor %}
+  </ul>
+  {% else %}
+  <p>No upcoming reminders.</p>
+  {% endif %}
+
   <h2>Today</h2>
   <ul>
     {% for task in tasks_today %}
