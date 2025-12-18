@@ -7,6 +7,7 @@ from .models import Task
 from django.forms import ModelForm
 from .forms import TaskForm
 
+
 # Create your views here.
 def signup(request):
     if request.method == 'POST':
@@ -35,12 +36,6 @@ def dashboard(request):
         'tasks_completed': tasks_completed,
     })
 
-
-class TaskForm(ModelForm):
-    class Meta:
-        model = Task
-        fields = ['title', 'description', 'due_date', 'status']
-
 @login_required
 def task_create(request):
     if request.method == "POST":
@@ -52,6 +47,18 @@ def task_create(request):
             return redirect('dashboard')
     else:
         form = TaskForm()
+    return render(request, 'core/task_form.html', {'form': form})
+
+@login_required
+def task_update(request, pk):
+    task = get_object_or_404(Task, pk=pk, owner=request.user)
+    if request.method == "POST":
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = TaskForm(instance=task)
     return render(request, 'core/task_form.html', {'form': form})
 
 
