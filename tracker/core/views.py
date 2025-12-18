@@ -19,6 +19,7 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+
 @login_required
 def dashboard(request):
     today = timezone.now().date()
@@ -60,6 +61,8 @@ def task_update(request, pk):
     else:
         form = TaskForm(instance=task)
     return render(request, 'core/task_form.html', {'form': form})
+
+
 
 
 
