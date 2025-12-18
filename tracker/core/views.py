@@ -3,9 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 
-from .models import Task
-from django.forms import ModelForm
-from .forms import TaskForm
+from .models import Task, Reminder
+from .forms import TaskForm, ReminderForm
 
 
 # Create your views here.
@@ -62,6 +61,18 @@ def task_update(request, pk):
         form = TaskForm(instance=task)
     return render(request, 'core/task_form.html', {'form': form})
 
+@login_required
+def reminder_create(request):
+    if request.method == "POST":
+        form = ReminderForm(request.POST)
+        if form.is_valid():
+            reminder = form.save(commit=False)
+            reminder.task.owner = request.user
+            reminder.save()
+            return redirect('dashboard')
+    else:
+        form = ReminderForm()
+    return render(request, 'core/reminder_form.html', {'form': form})
 
 
 

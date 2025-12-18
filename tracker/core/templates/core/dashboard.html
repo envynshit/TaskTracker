@@ -7,11 +7,14 @@
   <h1>Hello, {{ request.user.username }}</h1>
 
   <p><a href="{% url 'task_create' %}">+ New task</a> | 
+    <a href="{% url 'reminder_create' %}">Set Reminder</a> |
     <form method="post" action="{% url 'logout' %}" style="display:inline;">
       {% csrf_token %}
       <button type="submit">Logout</button>
     </form>
+  </p>
 
+  
   <h2>Today</h2>
   <ul>
     {% for task in tasks_today %}

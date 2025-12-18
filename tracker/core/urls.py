@@ -10,4 +10,5 @@ urlpatterns = [
     path('tasks/<int:pk>/edit/', views.task_update, name='task_update'),
     path('accounts/logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('accounts/profile/', views.dashboard, name='profile'),
+    path('reminders/', views.reminder_create, name='reminder_create'),
 ]
