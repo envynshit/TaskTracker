@@ -28,30 +28,37 @@ def dashboard(request):
         due_date__gte=today,
         due_date__lte=today + timezone.timedelta(days=7)
     )
+    
     tasks_completed = Task.objects.filter(owner=request.user, status='done')
     reminders = Reminder.objects.filter(
         task__owner=request.user,
         remind_at__gte=timezone.now(),
     ).order_by('remind_at')
 
+    overdue_tasks = Task.objects.filter(
+        owner=request.user,
+        status__in=['todo', 'in progress'],
+        due_date__lt=today,
+    )
+
     return render(request, 'core/dashboard.html', {
         'tasks_today': task_today,
         'tasks_week': tasks_week,
         'tasks_completed': tasks_completed,
         'reminders': reminders,
+        'overdue_tasks': overdue_tasks,
     })
 
 @login_required
 def reminder_create(request):
     if request.method == "POST":
-        form = ReminderForm(request.POST)
+        form = ReminderForm(request.POST, user=request.user)
         if form.is_valid():
             reminder = form.save(commit=False)
-            reminder.task.owner = request.user
             reminder.save()
             return redirect('dashboard')
     else:
-        form = ReminderForm()
+        form = ReminderForm(user=request.user)
     return render(request, 'core/reminder_form.html', {'form': form})
 
 @login_required

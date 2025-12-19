@@ -53,5 +53,15 @@
       <li>No completed tasks yet.</li>
     {% endfor %}
   </ul>
+  <h2>Overdue Tasks</h2>
+  <ul>
+    {% for task in overdue_tasks %}
+      <li style="color: red">
+        {{ task.title }} – was due {{ task.due_date }}
+      </li>
+    {% empty %}
+      <li>No overdue tasks. 🎉</li>
+    {% endfor %}
+  </ul>
 </body>
 </html>
