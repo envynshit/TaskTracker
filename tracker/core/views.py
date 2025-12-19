@@ -22,32 +22,40 @@ def signup(request):
 @login_required
 def dashboard(request):
     today = timezone.now().date()
-    task_today = Task.objects.filter(owner=request.user, due_date=today)
-    tasks_week = Task.objects.filter(
-        owner=request.user,
-        due_date__gte=today,
-        due_date__lte=today + timezone.timedelta(days=7)
-    )
-    
-    tasks_completed = Task.objects.filter(owner=request.user, status='done')
+    flt = request.GET.get('filter', 'today')
+
+    base_qs = Task.objects.filter(owner=request.user)
+
+    if flt == 'today':
+        tasks = base_qs.filter(due_date=today)
+    elif flt == 'week':
+        tasks = base_qs.filter(
+            due_date__gte=today,
+            due_date__lte=today + timezone.timedelta(days=7),
+        )
+    elif flt == 'upcoming':
+        tasks = base_qs.filter(due_date__gt=today)
+    elif flt == 'completed':
+        tasks = base_qs.filter(status='done')
+    elif flt == 'overdue':
+        tasks = base_qs.filter(
+            status__in=['todo', 'in_progress'],
+            due_date__lt=today,
+        )
+    else:
+        tasks = base_qs.none()
+
     reminders = Reminder.objects.filter(
         task__owner=request.user,
         remind_at__gte=timezone.now(),
     ).order_by('remind_at')
 
-    overdue_tasks = Task.objects.filter(
-        owner=request.user,
-        status__in=['todo', 'in progress'],
-        due_date__lt=today,
-    )
-
     return render(request, 'core/dashboard.html', {
-        'tasks_today': task_today,
-        'tasks_week': tasks_week,
-        'tasks_completed': tasks_completed,
+        'tasks': tasks,
+        'filter': flt,
         'reminders': reminders,
-        'overdue_tasks': overdue_tasks,
     })
+
 
 @login_required
 def reminder_create(request):
@@ -84,7 +92,7 @@ def task_update(request, pk):
             return redirect('dashboard')
     else:
         form = TaskForm(instance=task)
-    return render(request, 'core/task_form.html', {'form': form})
+    return render(request, 'core/update_form.html', {'form': form})
 
 
 
