@@ -23,11 +23,12 @@ def signup(request):
 def dashboard(request):
     today = timezone.now().date()
     flt = request.GET.get('filter', 'today')
+    selected_id = request.GET.get('task')
 
     base_qs = Task.objects.filter(owner=request.user)
 
     if flt == 'today':
-        tasks = base_qs.filter(due_date=today)
+        tasks = base_qs.filter(due_date__date=today)
     elif flt == 'week':
         tasks = base_qs.filter(
             due_date__gte=today,
@@ -45,15 +46,22 @@ def dashboard(request):
     else:
         tasks = base_qs.none()
 
+    selected_task = None
+    if selected_id:
+        selected_task = get_object_or_404(base_qs, pk=selected_id)
+
     reminders = Reminder.objects.filter(
         task__owner=request.user,
         remind_at__gte=timezone.now(),
     ).order_by('remind_at')
 
+    
+
     return render(request, 'core/dashboard.html', {
         'tasks': tasks,
         'filter': flt,
         'reminders': reminders,
+        'selected_task': selected_task,
     })
 
 

@@ -43,11 +43,6 @@
       <!-- Middle column (your existing lists) -->
       <main class="main-column">
         <header class="main-header">
-          <h1>Today</h1>
-          <a href="{% url 'task_create' %}" class="btn-primary">+ New Task</a>
-        </header>
-  
-        <section class="card">
           <h2 class="card-title">
             {% if filter == 'today' %}Today
             {% elif filter == 'week' %}This Week
@@ -56,22 +51,31 @@
             {% elif filter == 'overdue' %}Overdue
             {% else %}Tasks{% endif %}
           </h2>
+          <a href="{% url 'task_create' %}" class="btn-primary">+ New Task</a>
+        </header>
+  
+        <section class="card">
         
           <ul class="item-list">
             {% for task in tasks %}
-              <li class="item-row {% if filter == 'completed' %}item-completed{% elif filter == 'overdue' %}item-overdue{% endif %}">
-                <div class="item-main">
-                  <span class="item-title">{{ task.title }}</span>
-                  <span class="item-meta">
-                    {{ task.get_status_display }} · {{ task.due_date }}
-                  </span>
-                </div>
-                <a href="{% url 'task_update' task.pk %}" class="item-action btn-edit">Edit</a>
+              <li class="item-row">
+                <a href="{% url 'dashboard' %}?filter={{ filter }}&task={{ task.pk }}"
+                   class="item-row-link">
+                  <div class="item-main">
+                    <span class="item-title">{{ task.title }}</span>
+                    <span class="item-meta">
+                      {{ task.get_status_display }} · {{ task.due_date }}
+                    </span>
+                  </div>
+                  <span class="item-action-label">View</span>
+                </a>
               </li>
             {% empty %}
               <li class="item-row item-empty">No tasks in this view.</li>
             {% endfor %}
           </ul>
+          
+          
         </section>        
   
         <!-- reuse the styled lists you already have for Today/Week/Completed/Overdue -->
@@ -82,17 +86,18 @@
       <aside class="detail-column">
         <div class="card">
           <h2 class="card-title">Task details</h2>
-  
+      
           {% if selected_task %}
             <p><strong>Title:</strong> {{ selected_task.title }}</p>
             <p><strong>Description:</strong> {{ selected_task.description }}</p>
             <p><strong>Due:</strong> {{ selected_task.due_date }}</p>
             <p><strong>Status:</strong> {{ selected_task.get_status_display }}</p>
+      
             <a href="{% url 'task_update' selected_task.pk %}" class="btn-primary">
               Edit task
             </a>
           {% else %}
-            <p>Select a task to see details here.</p>
+            <p>Select a task from the middle list to see its details here.</p>
           {% endif %}
         </div>
       </aside>

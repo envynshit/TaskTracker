@@ -11,7 +11,7 @@
 
 /* Card header/title */
 .card-title {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 600;
   margin: 0 0 10px 0;
 }
@@ -171,33 +171,50 @@
 }
 
 .item-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;  /* keeps button on the right */
-    padding: 8px 12px;
+    list-style: none;
+    align-items: center;  /* keeps button on the right */
+    padding: 0;
     border-bottom: 1px solid #eee;
     background: #fafafa;
   }
+
+.item-row-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: inherit;            /* use normal text color */
+}
+
+.item-row-link:hover {
+  background-color: #f1f5f9;
+}
+
+.item-action-label {
+  font-size: 0.8rem;
+  color: #64748b;
+}
   
   /* base link style from before */
-  .item-action {
-    font-size: 0.85rem;
-    text-decoration: none;
-    margin-left: 12px;
-    white-space: nowrap;
-  }
-  
-  /* make it look like a button */
-  .btn-edit {
-    padding: 4px 10px;
-    border-radius: 4px;
-    background-color: #1976d2;
-    color: #ffffff;
-    border: none;
-  }
-  
-  .btn-edit:hover {
-    background-color: #145ba3;
-  }
-  
+.item-action {
+font-size: 0.85rem;
+text-decoration: none;
+margin-left: 12px;
+white-space: nowrap;
+}
+
+/* make it look like a button */
+.btn-edit {
+padding: 4px 10px;
+border-radius: 4px;
+background-color: #1976d2;
+color: #ffffff;
+border: none;
+}
+
+.btn-edit:hover {
+background-color: #145ba3;
+}
+
 /* Form Styles */
