@@ -1,16 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
-<html> 
+<html>
 <head>
+  <meta charset="utf-8">
   <title>Set Reminder</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}">
 </head>
 <body>
-  <h1>Set Reminder</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Set Reminder</button>
-  </form>
-  <p><a href="{% url 'dashboard' %}">Back to dashboard</a></p>
-</body>
 
+  <div class="layout" style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+
+    <div class="card" style="max-width: 520px; width: 100%;">
+      <header class="main-header" style="justify-content: space-between; margin-bottom: 1rem;">
+        <h1 class="card-title">Set reminder</h1>
+        <a href="{% url 'dashboard' %}" class="btn-secondary">Back</a>
+      </header>
+
+      <form method="post" class="item-list">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.75rem;">
+          Set reminder
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+</body>
 </html>

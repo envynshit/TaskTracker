@@ -124,9 +124,10 @@
 .btn-primary:hover {
   background-color: #ffa000;
 }
+/*--------------------------------- End of card styles ---------------------------------*/
 
 
-/* List */
+/*--------------------------------- List ---------------------------------*/
 .task-list {
   list-style: none;
   padding: 0;
@@ -216,5 +217,114 @@ border: none;
 .btn-edit:hover {
 background-color: #145ba3;
 }
+/*--------------------------------- End of card styles ---------------------------------*/
 
-/* Form Styles */
+/*--------------------------------- Dropdown styles ---------------------------------*/
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Wrap forms nicely inside cards */
+.item-list select,
+.card select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  appearance: none;              /* remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #64748b 50%),
+    linear-gradient(135deg, #64748b 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) 55%,
+    calc(100% - 11px) 55%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+/* Focus state */
+.item-list select:focus,
+.card select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f633;
+}
+
+/* Disabled */
+.item-list select:disabled,
+.card select:disabled {
+  background-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+/*--------------------------------- End of card styles ---------------------------------*/
+
+/*--------------------------------- Date Style ---------------------------------*/
+/* Base date input styling */
+.item-list input[type="date"],
+.card input[type="date"] {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Focus state */
+.item-list input[type="date"]:focus,
+.card input[type="date"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f633;
+}
+
+/* Remove spinners/clear button in WebKit */
+.item-list input[type="date"]::-webkit-inner-spin-button,
+.card input[type="date"]::-webkit-inner-spin-button,
+.item-list input[type="date"]::-webkit-clear-button,
+.card input[type="date"]::-webkit-clear-button {
+  display: none;
+}
+
+/* Optional: tweak calendar icon color/size */
+.item-list input[type="date"]::-webkit-calendar-picker-indicator,
+.card input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.item-list input[type="date"]:hover::-webkit-calendar-picker-indicator,
+.card input[type="date"]:hover::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+/*--------------------------------- End of Date styles ---------------------------------*/
+
+/*--------------------------------- DateTime styles ---------------------------------*/
+input[type="datetime-local"] {
+  width: 100%;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background-color: #f8fafc;
+  color: #0f172a;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px #3b82f633;
+}
+/*--------------------------------- End of DateTime styles ---------------------------------*/
