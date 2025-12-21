@@ -14,14 +14,14 @@
         <h2 class="sidebar-title">Menu</h2>
   
         <ul class="sidebar-list">
+          <li class="{% if filter == 'all' %}is-active{% endif %}">
+            <a href="{% url 'dashboard' %}?filter=all">All Tasks</a>
+          </li>
           <li class="{% if filter == 'today' %}is-active{% endif %}">
             <a href="{% url 'dashboard' %}?filter=today">Today</a>
           </li>
           <li class="{% if filter == 'week' %}is-active{% endif %}">
             <a href="{% url 'dashboard' %}?filter=week">This Week</a>
-          </li>
-          <li class="{% if filter == 'upcoming' %}is-active{% endif %}">
-            <a href="{% url 'dashboard' %}?filter=upcoming">Upcoming</a>
           </li>
           <li class="{% if filter == 'completed' %}is-active{% endif %}">
             <a href="{% url 'dashboard' %}?filter=completed">Completed</a>
@@ -44,9 +44,9 @@
       <main class="main-column">
         <header class="main-header">
           <h2 class="card-title">
-            {% if filter == 'today' %}Today
+            {% if filter == 'all' %}All Tasks
+            {% elif filter == 'today' %}Today
             {% elif filter == 'week' %}This Week
-            {% elif filter == 'upcoming' %}Upcoming
             {% elif filter == 'completed' %}Completed
             {% elif filter == 'overdue' %}Overdue
             {% else %}Tasks{% endif %}
@@ -92,12 +92,15 @@
             <p><strong>Description:</strong> {{ selected_task.description }}</p>
             <p><strong>Due:</strong> {{ selected_task.due_date }}</p>
             <p><strong>Status:</strong> {{ selected_task.get_status_display }}</p>
-      
+            <button class="btn-secondary" onclick="location.href='{% url 'reminder_create' selected_task.pk %}'">
+              Set Reminder
+            </button>
+
             <a href="{% url 'task_update' selected_task.pk %}" class="btn-primary">
               Edit task
             </a>
           {% else %}
-            <p>Select a task from the middle list to see its details here.</p>
+            <p style="font-family: Arial, sans-serif;">No Selected Task.</p>
           {% endif %}
         </div>
       </aside>

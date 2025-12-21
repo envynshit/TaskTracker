@@ -27,15 +27,15 @@ def dashboard(request):
 
     base_qs = Task.objects.filter(owner=request.user)
 
-    if flt == 'today':
+    if flt == 'all':
+        tasks = base_qs
+    elif flt == 'today':
         tasks = base_qs.filter(due_date__date=today)
     elif flt == 'week':
         tasks = base_qs.filter(
             due_date__gte=today,
             due_date__lte=today + timezone.timedelta(days=7),
         )
-    elif flt == 'upcoming':
-        tasks = base_qs.filter(due_date__gt=today)
     elif flt == 'completed':
         tasks = base_qs.filter(status='done')
     elif flt == 'overdue':
@@ -66,9 +66,10 @@ def dashboard(request):
 
 
 @login_required
-def reminder_create(request):
+def reminder_create(request, selected_task_pk):
+    selected_task = get_object_or_404(Task, pk=selected_task_pk, owner=request.user)
     if request.method == "POST":
-        form = ReminderForm(request.POST, user=request.user)
+        form = ReminderForm(request.POST, user=request.user, )
         if form.is_valid():
             reminder = form.save(commit=False)
             reminder.save()

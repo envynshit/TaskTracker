@@ -10,5 +10,5 @@ urlpatterns = [
     path('tasks/new/', views.task_create, name='task_create'),
     path('tasks/<int:pk>/edit/', views.task_update, name='task_update'),
     path('accounts/profile/', views.dashboard, name='profile'),
-    path('reminders/', views.reminder_create, name='reminder_create'),
+    path('reminders/<int:selected_task_pk>/', views.reminder_create, name='reminder_create'),
 ]
