@@ -38,6 +38,9 @@
             <li><a href="#">Work</a></li>
           </ul>
         </nav>
+        <button class="btn-primary" style="margin-top: 1rem;">
+          Logout
+        </button>
       </aside>
   
       <!-- Middle column (your existing lists) -->
@@ -55,7 +58,42 @@
         </header>
   
         <section class="card">
-        
+          <!-- Search bar and Sort Dropdown -->
+          <form method="get" class="search-sort-container">
+            <!-- keep current filter/task so they don't reset -->
+            <input type="hidden" name="filter" value="{{ filter }}">
+            {% if selected_task %}
+              <input type="hidden" name="task" value="{{ selected_task.id }}">
+            {% endif %}
+          
+            <input
+              type="text"
+              name="q"
+              placeholder="Search tasks..."
+              class="search-input"
+              value="{{ search_query|default:'' }}"
+            >
+          
+            <select name="sort" class="sort-dropdown">
+              <option value="">Sort by...</option>
+              <option value="due_date"  {% if sort_option == "due_date" %}selected{% endif %}>
+                Due Date (Ascending)
+              </option>
+              <option value="-due_date" {% if sort_option == "-due_date" %}selected{% endif %}>
+                Due Date (Descending)
+              </option>
+              <option value="title"     {% if sort_option == "title" %}selected{% endif %}>
+                Title (A-Z)
+              </option>
+              <option value="-title"    {% if sort_option == "-title" %}selected{% endif %}>
+                Title (Z-A)
+              </option>
+            </select>
+          
+            <button type="submit">Apply</button>
+          </form>
+          
+
           <ul class="item-list">
             {% for task in tasks %}
               <li class="item-row">
@@ -92,9 +130,12 @@
             <p><strong>Description:</strong> {{ selected_task.description }}</p>
             <p><strong>Due:</strong> {{ selected_task.due_date }}</p>
             <p><strong>Status:</strong> {{ selected_task.get_status_display }}</p>
-            <button class="btn-secondary" onclick="location.href='{% url 'reminder_create' selected_task.pk %}'">
+            <a href="{% url 'reminder_create' selected_task.pk %}" class="btn-secondary">
               Set Reminder
-            </button>
+            </a>
+            
+
+          
 
             <a href="{% url 'task_update' selected_task.pk %}" class="btn-primary">
               Edit task

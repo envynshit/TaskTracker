@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from .models import Task, Reminder
 from .forms import TaskForm, ReminderForm
+from django.db.models import Q
 
 
 # Create your views here.
@@ -27,6 +28,10 @@ def dashboard(request):
 
     base_qs = Task.objects.filter(owner=request.user)
 
+    search_query = request.GET.get('q', '').strip()
+    sort_option = request.GET.get('sort', '')
+
+    # Apply filtering based on the 'filter' parameter
     if flt == 'all':
         tasks = base_qs
     elif flt == 'today':
@@ -46,6 +51,16 @@ def dashboard(request):
     else:
         tasks = base_qs.none()
 
+    if search_query:
+        tasks = tasks.filter(
+            Q(title__icontains=search_query) | 
+            Q(description__icontains=search_query)
+        )
+
+    allowed_sorts = ['due_date', '-due_date', 'title', '-title']
+    if sort_option in allowed_sorts:
+        tasks = tasks.order_by(sort_option)
+
     selected_task = None
     if selected_id:
         selected_task = get_object_or_404(base_qs, pk=selected_id)
@@ -62,6 +77,8 @@ def dashboard(request):
         'filter': flt,
         'reminders': reminders,
         'selected_task': selected_task,
+        'search_query': search_query,
+        'sort_option': sort_option,
     })
 
 
@@ -102,9 +119,3 @@ def task_update(request, pk):
     else:
         form = TaskForm(instance=task)
     return render(request, 'core/update_form.html', {'form': form})
-
-
-
-
-
-

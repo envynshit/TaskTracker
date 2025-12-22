@@ -108,6 +108,8 @@
 .detail-column {
   width: 280px;
   padding: 20px 16px 20px 0;
+  border-left: 1px solid #e0e0e0;
+  
 }
 
 /* Reusable card and button (you already have card/item styles, adjust as needed) */
